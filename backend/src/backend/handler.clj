@@ -1,6 +1,5 @@
 (ns backend.handler
-  (:require [cheshire.core :as json]
-            [clj-http.client :as http]
+  (:require [clj-http.client :as http]
             [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.middleware.defaults :refer [api-defaults wrap-defaults]]
@@ -18,27 +17,33 @@
     :else 0))
 
 (defn api-key []
-  (System/getenv "API_NINJAS_KEY"))
+  (System/getenv "USDA_API_KEY"))
 
-(defn consultar-api-ninjas [url parametros]
+(defn consultar-usda [parametros]
   (if-let [chave (api-key)]
-    (:body (http/get url {:query-params parametros
-                          :headers {"X-Api-Key" chave}
+    (:body (http/get "https://api.nal.usda.gov/fdc/v1/foods/search"
+                     {:query-params (assoc parametros :api_key chave)
                           :as :json}))
-    (throw (Exception. "API_NINJAS_KEY nao configurada"))))
+    (throw (Exception. "USDA_API_KEY nao configurada"))))
+
+(defn nutriente-energia? [nutriente]
+  (and (= "Energy" (:nutrientName nutriente))
+       (= "KCAL" (:unitName nutriente))))
+
+(defn calorias-por-100g [alimento-usda]
+  (or (:value (first (filter nutriente-energia?
+                             (:foodNutrients alimento-usda))))
+      0))
 
 (defn calorias-alimento [alimento quantidade]
-  (let [resposta (consultar-api-ninjas
-                  "https://api.api-ninjas.com/v1/nutrition"
-                  {:query (str quantidade " " alimento)})]
-    (reduce + (map :calories resposta))))
+  (let [resposta (consultar-usda {:query alimento
+                                  :pageSize 1})
+        alimento-usda (first (:foods resposta))
+        kcal-100g (calorias-por-100g alimento-usda)]
+    (/ (* kcal-100g (para-numero quantidade)) 100)))
 
-(defn calorias-atividade [atividade duracao]
-  (let [resposta (consultar-api-ninjas
-                  "https://api.api-ninjas.com/v1/caloriesburned"
-                  {:activity atividade
-                   :duration duracao})]
-    (reduce + (map :total_calories resposta))))
+(defn calorias-atividade [calorias]
+  (para-numero calorias))
 
 (defn dentro-do-periodo? [inicio fim transacao]
   (let [data (:data transacao)]
@@ -78,9 +83,9 @@
   (registrar-transacao! (assoc dados :tipo "ganho")
                         (calorias-alimento alimento quantidade)))
 
-(defn registrar-atividade! [{:keys [atividade duracao] :as dados}]
+(defn registrar-atividade! [{:keys [calorias] :as dados}]
   (registrar-transacao! (assoc dados :tipo "perda")
-                        (- (calorias-atividade atividade duracao))))
+                        (- (calorias-atividade calorias))))
 
 (defn resposta [status corpo]
   {:status status

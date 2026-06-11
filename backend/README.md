@@ -1,6 +1,7 @@
 # backend
 
 API REST da Calculadora de Calorias feita com Clojure, Compojure, Ring e JSON.
+As calorias dos alimentos sao consultadas na API USDA FoodData Central.
 
 ## Prerequisites
 
@@ -15,6 +16,7 @@ To start a web server for the application, run:
     lein ring server
 
 The API exposes the main endpoints in `src/backend/handler.clj`.
+Configure `USDA_API_KEY` antes de registrar alimentos.
 
 ## Endpoints
 

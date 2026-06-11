@@ -25,7 +25,7 @@ O backend usa Compojure para definir rotas, Ring para receber requisicoes HTTP, 
 ## Funcionalidades
 
 - Cadastro e consulta de dados pessoais: altura, peso, idade e sexo.
-- Registro de consumo de alimento como ganho calorico.
+- Registro de consumo de alimento como ganho calorico usando a API USDA FoodData Central.
 - Registro de atividade fisica como perda calorica.
 - Consulta de extrato de transacoes por periodo.
 - Consulta de saldo de calorias por periodo.
@@ -49,7 +49,7 @@ O estado mutavel ficou isolado no `atom` chamado `banco`. As transacoes sao repr
 - `GET /`: mostra uma mensagem inicial e as rotas disponiveis.
 - `POST /usuarios`: registra dados pessoais.
 - `GET /usuarios/:id`: consulta dados pessoais.
-- `POST /alimentos`: registra consumo de alimento.
+- `POST /alimentos`: registra consumo de alimento e consulta calorias na USDA FoodData Central.
 - `POST /atividades`: registra realizacao de atividade fisica.
 - `GET /extrato?inicio=aaaa-mm-dd&fim=aaaa-mm-dd`: consulta extrato por periodo.
 - `GET /saldo?inicio=aaaa-mm-dd&fim=aaaa-mm-dd`: consulta saldo por periodo.
@@ -65,7 +65,7 @@ O estado mutavel ficou isolado no `atom` chamado `banco`. As transacoes sao repr
 }
 ```
 
-Para chamadas externas de calorias usando API Ninjas, configure a variavel `API_NINJAS_KEY`.
+Para chamadas externas de calorias de alimentos usando USDA FoodData Central, configure a variavel `USDA_API_KEY`.
 
 ## Como Executar
 

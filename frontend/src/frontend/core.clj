@@ -30,7 +30,8 @@
   {:usuario-id (ler-numero "Id do usuario: ")
    :data (ler "Data (aaaa-mm-dd): ")
    :atividade (ler "Atividade fisica: ")
-   :duracao (ler-numero "Duracao em minutos: ")})
+   :duracao (ler-numero "Duracao em minutos: ")
+   :calorias (ler-numero "Calorias gastas: ")})
 
 (defn post-json [rota corpo]
   (:body (http/post (str api-url rota)
