@@ -13,12 +13,6 @@ Antes de executar o projeto, tenha instalado:
 - Leiningen 2.0.0 ou superior.
 - Chave da API USDA FoodData Central para consultar calorias dos alimentos.
 
-Configure a chave da USDA antes de registrar alimentos:
-
-```bash
-USDA_API_KEY=sua_chave_aqui
-```
-
 ## backend
 
 API REST da Calculadora de Calorias feita com Clojure, Compojure, Ring e JSON. As calorias dos alimentos sao consultadas na API USDA FoodData Central.
