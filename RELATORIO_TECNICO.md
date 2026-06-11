@@ -11,16 +11,31 @@ O projeto implementa uma calculadora de calorias em Clojure dividida em dois pro
 
 ```text
 trab-av3/
-├── backend/
-│   ├── project.clj
-│   └── src/backend/handler.clj
-├── frontend/
-│   ├── project.clj
-│   └── src/frontend/core.clj
-└── RELATORIO_TECNICO.md
+|-- backend/
+|   |-- project.clj
+|   `-- src/backend/handler.clj
+|-- frontend/
+|   |-- project.clj
+|   `-- src/frontend/core.clj
+|-- README.md
+`-- RELATORIO_TECNICO.md
 ```
 
 O backend usa Compojure para definir rotas, Ring para receber requisicoes HTTP, `ring-json` para entrada e saida em JSON, `clj-http` para chamadas HTTP e `cheshire` para JSON, seguindo os capitulos 9 a 13 do livro.
+
+## Prerequisitos
+
+Antes de executar o projeto, tenha instalado:
+
+- Java JDK.
+- Leiningen 2.0.0 ou superior.
+- Chave da API USDA FoodData Central para consultar calorias dos alimentos.
+
+Configure a chave da USDA antes de registrar alimentos:
+
+```bash
+USDA_API_KEY=sua_chave_aqui
+```
 
 ## Funcionalidades
 
@@ -65,18 +80,24 @@ O estado mutavel ficou isolado no `atom` chamado `banco`. As transacoes sao repr
 }
 ```
 
-Para chamadas externas de calorias de alimentos usando USDA FoodData Central, configure a variavel `USDA_API_KEY`.
-
 ## Como Executar
 
-Em um terminal:
+A arquitetura exige dois terminais distintos operando simultaneamente.
+
+### Terminal 1 - Inicie o Servidor Backend
+
+Abra a pasta do backend e inicie a API:
 
 ```bash
 cd backend
-lein ring server-headless 3000
+lein ring server
 ```
 
-Em outro terminal:
+Opcional: use `lein ring server-headless` se preferir que ele nao tente abrir um navegador web vazio.
+
+### Terminal 2 - Inicie a Interface CLI Frontend
+
+Com o servidor rodando e aguardando chamadas, abra o segundo terminal, entre no frontend e rode o cliente interativo:
 
 ```bash
 cd frontend
@@ -85,10 +106,14 @@ lein run
 
 ## Como Testar
 
+Backend:
+
 ```bash
 cd backend
 lein test
 ```
+
+Frontend:
 
 ```bash
 cd frontend

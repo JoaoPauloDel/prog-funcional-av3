@@ -3,20 +3,32 @@
 API REST da Calculadora de Calorias feita com Clojure, Compojure, Ring e JSON.
 As calorias dos alimentos sao consultadas na API USDA FoodData Central.
 
-## Prerequisites
+## Prerequisitos
 
-You will need [Leiningen][] 2.0.0 or above installed.
+Antes de executar, tenha instalado:
 
-[leiningen]: https://github.com/technomancy/leiningen
+- Java JDK.
+- Leiningen 2.0.0 ou superior.
+- Chave da API USDA FoodData Central.
 
-## Running
+Configure a chave antes de registrar alimentos:
 
-To start a web server for the application, run:
+```bash
+USDA_API_KEY=sua_chave_aqui
+```
 
-    lein ring server
+## Como Executar
 
-The API exposes the main endpoints in `src/backend/handler.clj`.
-Configure `USDA_API_KEY` antes de registrar alimentos.
+Entre na pasta do backend e inicie a API:
+
+```bash
+cd backend
+lein ring server
+```
+
+Opcional: use `lein ring server-headless` se preferir que ele nao tente abrir um navegador web vazio.
+
+O arquivo dos endpoints fica em `src/backend/handler.clj`.
 
 ## Endpoints
 
@@ -27,3 +39,9 @@ Configure `USDA_API_KEY` antes de registrar alimentos.
 - `POST /atividades`
 - `GET /extrato?inicio=aaaa-mm-dd&fim=aaaa-mm-dd`
 - `GET /saldo?inicio=aaaa-mm-dd&fim=aaaa-mm-dd`
+
+## Como Testar
+
+```bash
+lein test
+```
