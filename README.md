@@ -58,27 +58,4 @@ lein ring server
 
 Opcional: use `lein ring server-headless` se preferir que ele nao tente abrir um navegador web vazio.
 
-### Terminal 2 - Inicie a Interface CLI Frontend
-
-Com o servidor rodando e aguardando chamadas, abra o segundo terminal, entre no frontend e rode o cliente interativo:
-
-```bash
-cd frontend
-lein run
-```
-
-## Como Testar
-
-Backend:
-
-```bash
-cd backend
-lein test
-```
-
-Frontend:
-
-```bash
-cd frontend
-lein test
 ```
